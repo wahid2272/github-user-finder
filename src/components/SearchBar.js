@@ -7,8 +7,12 @@ class SearchBar extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    this.props.searchUsers(this.state.text);
-    this.setState({ text: "" });
+    if (this.state.text === "") {
+      this.props.setAlert("Please enter your search need", "light");
+    } else {
+      this.props.searchUsers(this.state.text);
+      this.setState({ text: "" });
+    }
   };
 
   onChange = (event) => {
@@ -17,7 +21,7 @@ class SearchBar extends Component {
 
   render() {
     const { showClear, clearUsers } = this.props;
-    
+
     return (
       <div>
         <form className="form" onSubmit={this.onSubmit}>
@@ -35,10 +39,7 @@ class SearchBar extends Component {
           />
         </form>
         {showClear && (
-          <button
-            className="btn btn-light btn-block"
-            onClick={clearUsers}
-          >
+          <button className="btn btn-light btn-block" onClick={clearUsers}>
             Clear
           </button>
         )}
