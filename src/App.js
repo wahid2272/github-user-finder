@@ -1,16 +1,18 @@
 import axios from "axios";
 import React, { Component } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
+import Alert from "./components/Alert";
 import AllUsers from "./components/AllUsers";
 import Navbar from "./components/Navbar";
 import SearchBar from "./components/SearchBar";
-import Alert from './components/Alert';
+import About from './components/About';
 
 class App extends Component {
   state = {
     users: [],
     loading: false,
-    alert: null
+    alert: null,
   };
 
   searchUsers = async (text) => {
@@ -26,28 +28,41 @@ class App extends Component {
   clearUsers = () => this.setState({ users: [], loading: false });
 
   setAlert = (msg, type) => {
-    this.setState({ alert: {msg, type }});
+    this.setState({ alert: { msg, type } });
 
-    setTimeout(() => this.setState({ alert: null }), 3000)
-  }
+    setTimeout(() => this.setState({ alert: null }), 3000);
+  };
 
   render() {
     const { users, loading } = this.state;
 
     return (
-      <div className="App">
-        <Navbar />
-        <div className="container">
-          <Alert alert={this.state.alert}/>
-          <SearchBar
-            searchUsers={this.searchUsers}
-            clearUsers={this.clearUsers}
-            showClear={users.length > 0 ? true : false}
-            setAlert={this.setAlert}
-          />
-          <AllUsers loading={loading} users={users} />
+      <Router>
+        <div className="App">
+          <Navbar />
+          <div className="container">
+            <Alert alert={this.state.alert} />
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={(props) => (
+                  <div>
+                    <SearchBar
+                      searchUsers={this.searchUsers}
+                      clearUsers={this.clearUsers}
+                      showClear={users.length > 0 ? true : false}
+                      setAlert={this.setAlert}
+                    />
+                    <AllUsers loading={loading} users={users} />
+                  </div>
+                )}
+              />
+              <Route exact path='/about' component={About}/>
+            </Switch>
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }
