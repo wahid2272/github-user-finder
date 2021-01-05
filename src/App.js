@@ -1,20 +1,24 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
+import About from "./components/About";
 import Alert from "./components/Alert";
 import AllUsers from "./components/AllUsers";
 import Navbar from "./components/Navbar";
 import SearchBar from "./components/SearchBar";
-import About from './components/About';
+import UserProfile from "./components/UserProfile";
 
 class App extends Component {
   state = {
     users: [],
+    user: {},
+    repos: [],
     loading: false,
     alert: null,
   };
 
+  // Search User Name
   searchUsers = async (text) => {
     this.setState({ loading: true });
 
@@ -25,6 +29,30 @@ class App extends Component {
     this.setState({ users: res.data.items, loading: false });
   };
 
+  // Explore a single user
+  getSingleUser = async (loginname) => {
+    this.setState({ loading: true });
+
+    const res = await axios.get(
+      `https://api.github.com/users/${loginname}?client_id=${process.env.REACT_APP_CLIENT_ID}&client_secret=${process.env.REACT_APP_CLIENT_SECRET}`
+    );
+
+    this.setState({ user: res.data, loading: false });
+  };
+
+  // Find User Repository
+  getUserRepository = async (loginname) => {
+    this.setState({ loading: true });
+
+    const res = await axios.get(
+      `https://api.github.com/users/${loginname}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_CLIENT_ID}&client_secret=${process.env.REACT_APP_CLIENT_SECRET}`
+    );
+
+    this.setState({ repos: res.data, loading: false });
+  };
+
+  // Functions
+
   clearUsers = () => this.setState({ users: [], loading: false });
 
   setAlert = (msg, type) => {
@@ -34,7 +62,7 @@ class App extends Component {
   };
 
   render() {
-    const { users, loading } = this.state;
+    const { users, user, repos, loading } = this.state;
 
     return (
       <Router>
@@ -58,7 +86,21 @@ class App extends Component {
                   </div>
                 )}
               />
-              <Route exact path='/about' component={About}/>
+              <Route exact path="/about" component={About} />
+              <Route
+                exact
+                path="/user/:login"
+                render={(props) => (
+                  <UserProfile
+                    {...props}
+                    getSingleUser={this.getSingleUser}
+                    getUserRepository={this.getUserRepository}
+                    user={user}
+                    repos={repos}
+                    loading={loading}
+                  />
+                )}
+              />
             </Switch>
           </div>
         </div>
