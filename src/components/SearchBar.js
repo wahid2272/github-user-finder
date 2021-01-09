@@ -1,12 +1,31 @@
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
 import React, { useContext, useState } from "react";
 import AlertContext from "./alert/alertContext";
 import GithubContext from "./context/githubContext";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  searchButton: {
+    backgroundColor: "#333333",
+    '&:hover': {
+      backgroundColor:"#333333",
+      opacity: "0.8"
+  }
+  },
+}));
 
 const SearchBar = () => {
   const githubContext = useContext(GithubContext);
   const alertContext = useContext(AlertContext);
 
   const [text, setText] = useState("");
+
+  const classes = useStyles();
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -23,7 +42,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div>
+    <div className={classes.root}>
       <form className="form" onSubmit={onSubmit}>
         <input
           type="text"
@@ -32,19 +51,14 @@ const SearchBar = () => {
           value={text}
           onChange={onChange}
         />
-        <input
-          type="submit"
-          value="Search"
-          className="btn btn-dark btn-block"
-        />
+        <Button variant="contained" fullWidth="true" color="primary" value="Search" className={classes.searchButton} onClick={onSubmit}>
+          Search
+        </Button>
       </form>
       {githubContext.users.length > 0 && (
-        <button
-          className="btn btn-light btn-block"
-          onClick={githubContext.clearUsers}
-        >
+        <Button variant="outlined" fullWidth="true" onClick={githubContext.clearUsers}>
           Clear
-        </button>
+        </Button>
       )}
     </div>
   );
