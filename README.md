@@ -2,6 +2,10 @@
 
 This is a personal Project aimed to showcase my programming skills. In this project, an user can search any github profile, check the profile and their latest repositories (upto 5 repositories) as well as can visit the original github pages of their search results.
 
+# Deployed to Netlify
+
+Link: https://github-application.netlify.app/
+
 ## Available Scripts
 
 In the project directory, you can run:
