@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
       opacity: "0.8"
   }
   },
+  buttonPadding: {
+    padding: "10px"
+  }
 }));
 
 const SearchBar = () => {
@@ -54,12 +57,13 @@ const SearchBar = () => {
         <Button variant="contained" fullWidth="true" color="primary" value="Search" className={classes.searchButton} onClick={onSubmit}>
           Search
         </Button>
-      </form>
+        <div className={classes.buttonPadding}></div>
       {githubContext.users.length > 0 && (
         <Button variant="outlined" fullWidth="true" onClick={githubContext.clearUsers}>
           Clear
         </Button>
       )}
+      </form>
     </div>
   );
 };
