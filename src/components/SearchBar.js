@@ -58,10 +58,10 @@ const SearchBar = () => {
           Search
         </Button>
         <div className={classes.buttonPadding}></div>
-      {githubContext.users.length > 0 && (
-        <Button variant="outlined" fullWidth="true" onClick={githubContext.clearUsers}>
-          Clear
-        </Button>
+        {githubContext.users.length > 0 && (
+          <Button variant="outlined" fullWidth="true" onClick={githubContext.clearUsers}>
+            Clear
+          </Button>
       )}
       </form>
     </div>
