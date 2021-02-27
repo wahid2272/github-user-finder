@@ -36,7 +36,7 @@ const SearchBar = () => {
       alertContext.setAlert("Please enter your search need", "light");
     } else {
       githubContext.searchUsers(text);
-      setText("");
+      setText(""); 
     }
   };
 
